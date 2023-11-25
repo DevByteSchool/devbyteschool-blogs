@@ -1,5 +1,11 @@
 # API Documentation.
 
+### Entity and Business Logic:
+
+1. **User**
+2. **Blogs**
+3. **Comments**
+
 ### A) Authentication & Authorization
 
 #### 1) Register API

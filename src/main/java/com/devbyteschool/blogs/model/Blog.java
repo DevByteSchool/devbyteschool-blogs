@@ -3,7 +3,6 @@ package com.devbyteschool.blogs.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,7 +15,7 @@ import java.time.LocalDateTime;
 public class Blog {
 
     @Id
-    private ObjectId blogId;
+    private String blogId;
 
     private String title;
 
@@ -24,7 +23,7 @@ public class Blog {
 
     private Boolean publish;
 
-    private ObjectId userId;
+    private String userId;
 
     private LocalDateTime createdAt;
 

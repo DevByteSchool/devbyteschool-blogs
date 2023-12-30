@@ -8,7 +8,6 @@ import com.devbyteschool.blogs.dto.UpdateBlogRequest;
 import com.devbyteschool.blogs.model.Blog;
 import com.devbyteschool.blogs.service.BlogService;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +26,11 @@ public class BlogController {
 
     @PostMapping("v1/blogs")
     public ResponseEntity<DBSResponseEntity> createBlogCall(@Valid @RequestBody CreateBlogRequest createBlogRequest) {
-        Blog blog = new Blog();
+
         DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
 
         try {
-            BeanUtils.copyProperties(createBlogRequest, blog);
-            Blog createdBlog = blogService.createBlog(blog);
+            Blog createdBlog = blogService.createBlog(createBlogRequest);
             dbsResponseEntity.setMessage("Blog created successfully.");
             dbsResponseEntity.setData(createdBlog);
             return ResponseEntity.ok(dbsResponseEntity);
@@ -44,12 +42,10 @@ public class BlogController {
 
     @PutMapping("v1/blogs")
     public ResponseEntity<DBSResponseEntity> updateBlogCall(@Valid @RequestBody UpdateBlogRequest updateBlogRequest) {
-        Blog blog = new Blog();
         DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
 
         try {
-            BeanUtils.copyProperties(updateBlogRequest, blog);
-            Blog updatedBlog = blogService.updateBlog(blog);
+            Blog updatedBlog = blogService.updateBlog(updateBlogRequest);
             dbsResponseEntity.setMessage("Blog updated successfully.");
             dbsResponseEntity.setData(updatedBlog);
             return ResponseEntity.ok(dbsResponseEntity);
@@ -61,7 +57,6 @@ public class BlogController {
 
     @GetMapping("v1/blogs/{blogId}")
     public ResponseEntity<DBSResponseEntity> getBlogCall(@PathVariable String blogId) {
-        Blog blog = new Blog();
         DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
 
         try {
@@ -76,7 +71,6 @@ public class BlogController {
 
     @DeleteMapping("v1/blogs/{blogId}")
     public ResponseEntity<DBSResponseEntity> deleteBlogCall(@PathVariable String blogId) {
-        Blog blog = new Blog();
         DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
 
         try {
@@ -95,7 +89,6 @@ public class BlogController {
                                                           @RequestParam(defaultValue = "id") String sortBy,
                                                           @RequestParam(defaultValue = "1") String userId
     ) {
-        Blog blog = new Blog();
         CommonPaginationRequest commonPaginationRequest = new CommonPaginationRequest();
         commonPaginationRequest.setPageNo(pageNo);
         commonPaginationRequest.setPageSize(pageSize);
@@ -104,8 +97,8 @@ public class BlogController {
         DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
 
         try {
-            List<Blog> Blogs = blogService.getBlogs(commonPaginationRequest);
-            dbsResponseEntity.setData(Blogs);
+            List<Blog> blogs = blogService.getBlogs(commonPaginationRequest);
+            dbsResponseEntity.setData(blogs);
             return ResponseEntity.ok(dbsResponseEntity);
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

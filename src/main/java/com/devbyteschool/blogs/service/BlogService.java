@@ -1,14 +1,18 @@
 package com.devbyteschool.blogs.service;
 
 import com.devbyteschool.blogs.dto.CommonPaginationRequest;
+import com.devbyteschool.blogs.dto.CreateBlogRequest;
+import com.devbyteschool.blogs.dto.UpdateBlogRequest;
 import com.devbyteschool.blogs.jpa.BlogRepository;
 import com.devbyteschool.blogs.model.Blog;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,11 +22,18 @@ public class BlogService {
     private BlogRepository blogRepository;
 
 
-    public Blog createBlog(Blog blog) throws Exception {
+    public Blog createBlog(CreateBlogRequest createBlogRequest) throws Exception {
+        Blog blog = new Blog();
+        BeanUtils.copyProperties(createBlogRequest, blog);
+        blog.setCreatedAt(LocalDateTime.now());
+        blog.setUpdatedAt(LocalDateTime.now());
         return blogRepository.save(blog);
     }
 
-    public Blog updateBlog(Blog blog) throws Exception {
+    public Blog updateBlog(UpdateBlogRequest updateBlogRequest) throws Exception {
+        Blog blog = blogRepository.findByBlogId(updateBlogRequest.getBlogId());
+        BeanUtils.copyProperties(updateBlogRequest, blog);
+        blog.setUpdatedAt(LocalDateTime.now());
         return blogRepository.save(blog);
     }
 

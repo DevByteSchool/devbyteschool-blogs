@@ -5,12 +5,14 @@ import com.devbyteschool.blogs.dto.CommonPaginationRequest;
 import com.devbyteschool.blogs.dto.CreateBlogRequest;
 import com.devbyteschool.blogs.dto.DBSResponseEntity;
 import com.devbyteschool.blogs.dto.UpdateBlogRequest;
+import com.devbyteschool.blogs.exception.RecordNotFoundException;
 import com.devbyteschool.blogs.model.Blog;
 import com.devbyteschool.blogs.service.BlogService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,10 +48,14 @@ public class BlogController {
 
         try {
             Blog updatedBlog = blogService.updateBlog(updateBlogRequest);
+            if(ObjectUtils.isEmpty(updatedBlog)) throw new RecordNotFoundException("Record not present in database.");
+
             dbsResponseEntity.setMessage("Blog updated successfully.");
             dbsResponseEntity.setData(updatedBlog);
             return ResponseEntity.ok(dbsResponseEntity);
-        } catch (Exception exception) {
+        }catch (RecordNotFoundException exception) {
+            throw exception;
+        }catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 

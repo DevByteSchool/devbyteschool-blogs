@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +33,7 @@ public class BlogService {
 
     public Blog updateBlog(UpdateBlogRequest updateBlogRequest) throws Exception {
         Blog blog = blogRepository.findByBlogId(updateBlogRequest.getBlogId());
+        if(ObjectUtils.isEmpty(blog)) return null;
         BeanUtils.copyProperties(updateBlogRequest, blog);
         blog.setUpdatedAt(LocalDateTime.now());
         return blogRepository.save(blog);

@@ -9,6 +9,9 @@ import com.devbyteschool.blogs.exception.RecordNotFoundException;
 import com.devbyteschool.blogs.model.Blog;
 import com.devbyteschool.blogs.service.BlogService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +23,9 @@ import java.util.List;
 
 @RestController
 @Validated
+@Slf4j
 public class BlogController {
+
 
     @Autowired
     private BlogService blogService;
@@ -31,12 +36,16 @@ public class BlogController {
 
         DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
 
+        log.info("BlogController:createBlogCall request received with body : {}",createBlogRequest.toString());
+
         try {
             Blog createdBlog = blogService.createBlog(createBlogRequest);
+            log.info("BlogService:updateBlog record save successfully with blogId : {}",createdBlog.getBlogId());
             dbsResponseEntity.setMessage("Blog created successfully.");
             dbsResponseEntity.setData(createdBlog);
             return ResponseEntity.ok(dbsResponseEntity);
         } catch (Exception exception) {
+            log.debug("BlogController:createBlogCall something when wrong : {}",exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
@@ -46,6 +55,8 @@ public class BlogController {
     public ResponseEntity<DBSResponseEntity> updateBlogCall(@Valid @RequestBody UpdateBlogRequest updateBlogRequest) {
         DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
 
+        log.info("BlogController:updateBlogCall request received with body : {}",updateBlogRequest.toString());
+
         try {
             Blog updatedBlog = blogService.updateBlog(updateBlogRequest);
             if(ObjectUtils.isEmpty(updatedBlog)) throw new RecordNotFoundException("Record not present in database.");
@@ -54,8 +65,10 @@ public class BlogController {
             dbsResponseEntity.setData(updatedBlog);
             return ResponseEntity.ok(dbsResponseEntity);
         }catch (RecordNotFoundException exception) {
+            log.debug("BlogController:updateBlogCall record not found for blogId : {}",exception);
             throw exception;
         }catch (Exception exception) {
+            log.debug("BlogController:updateBlogCall something when wrong : {}",exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 

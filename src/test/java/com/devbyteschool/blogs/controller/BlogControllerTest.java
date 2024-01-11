@@ -38,9 +38,6 @@ public class BlogControllerTest {
     @MockBean
     private BlogService blogService;
 
-    @MockBean
-    private BlogRepository blogRepository;
-
     @Test
     public void testUpdateBlogValidationFailed() throws Exception {
 
@@ -54,7 +51,7 @@ public class BlogControllerTest {
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/v1/blogs")
                 .accept(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(updateBlogRequest))
+                .content(objectMapper.writeValueAsString(updateBlogRequest))
                 .contentType(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -78,7 +75,7 @@ public class BlogControllerTest {
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/v1/blogs")
                 .accept(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(updateBlogRequest))
+                .content(objectMapper.writeValueAsString(updateBlogRequest))
                 .contentType(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();

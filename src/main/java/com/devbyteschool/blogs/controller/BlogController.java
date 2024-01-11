@@ -81,6 +81,7 @@ public class BlogController {
             dbsResponseEntity.setData(getBlog);
             return ResponseEntity.ok(dbsResponseEntity);
         } catch (Exception exception) {
+            exception.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 

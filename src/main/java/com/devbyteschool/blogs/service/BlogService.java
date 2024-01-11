@@ -11,6 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,6 +26,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@CacheConfig(cacheNames = "blogs")
 public class BlogService {
 
     @Autowired
@@ -36,22 +41,24 @@ public class BlogService {
         return blogRepository.save(blog);
     }
 
+    @CachePut(key ="#updateBlogRequest.blogId" )
     public Blog updateBlog(UpdateBlogRequest updateBlogRequest) throws Exception {
         Blog blog = blogRepository.findByBlogId(updateBlogRequest.getBlogId());
-        if(ObjectUtils.isEmpty(blog)) return null;
+        if (ObjectUtils.isEmpty(blog)) return null;
         BeanUtils.copyProperties(updateBlogRequest, blog);
         blog.setUpdatedAt(LocalDateTime.now());
-        log.info("BlogService:updateBlog record updated successfully with blogId  : {}",blog.getBlogId());
+        log.info("BlogService:updateBlog record updated successfully with blogId  : {}", blog.getBlogId());
         return blogRepository.save(blog);
     }
 
-    public void deleteBlog(String blidId) throws Exception {
-        blogRepository.deleteByBlogId(blidId);
+    @CacheEvict(key ="#blogId" )
+    public void deleteBlog(String blogId) throws Exception {
+        blogRepository.deleteByBlogId(blogId);
     }
 
-
-    public Blog getBlog(String blidId) throws Exception {
-        return blogRepository.findByBlogId(blidId);
+    @Cacheable(key = "#blogId")
+    public Blog getBlog(String blogId) throws Exception {
+        return blogRepository.findByBlogId(blogId);
     }
 
     public List<Blog> getBlogs(CommonPaginationRequest commonPaginationRequest) throws Exception {

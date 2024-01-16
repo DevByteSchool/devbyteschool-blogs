@@ -32,6 +32,24 @@ public class GlobalException {
         return new ResponseEntity<>(dbsResponseEntity,HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UserAlreadyRegisterException.class)
+    public ResponseEntity<DBSResponseEntity> handleUserAlreadyRegisterException(
+            UserAlreadyRegisterException  ex) {
+        DBSResponseEntity dbsResponseEntity=new DBSResponseEntity();
+        dbsResponseEntity.setMessage(ex.message);
+        log.debug("GlobalException:handleUserAlreadyRegisterException user already present in database.");
+        return new ResponseEntity<>(dbsResponseEntity,HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<DBSResponseEntity> handleAuthenticationFailedException(
+            AuthenticationFailedException  ex) {
+        DBSResponseEntity dbsResponseEntity=new DBSResponseEntity();
+        dbsResponseEntity.setMessage(ex.message);
+        log.debug("GlobalException:handleUserAlreadyRegisterException Authentication failed.");
+        return new ResponseEntity<>(dbsResponseEntity,HttpStatus.UNAUTHORIZED);
+    }
+
 
 
 }

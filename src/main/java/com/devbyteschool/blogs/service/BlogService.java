@@ -1,14 +1,11 @@
 package com.devbyteschool.blogs.service;
 
-import com.devbyteschool.blogs.controller.BlogController;
 import com.devbyteschool.blogs.dto.CommonPaginationRequest;
 import com.devbyteschool.blogs.dto.CreateBlogRequest;
 import com.devbyteschool.blogs.dto.UpdateBlogRequest;
 import com.devbyteschool.blogs.jpa.BlogRepository;
 import com.devbyteschool.blogs.model.Blog;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;

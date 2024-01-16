@@ -24,7 +24,9 @@ public class User {
 
     private String password;
 
-    private byte role;
+    private Integer role;
+
+    private Integer isSocialRegister;
 
     private LocalDateTime createdAt;
 

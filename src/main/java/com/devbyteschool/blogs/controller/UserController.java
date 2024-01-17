@@ -11,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @Slf4j
@@ -35,10 +32,10 @@ public class UserController {
             dbsResponseEntity.setMessage("Registration done successfully please login.");
             return ResponseEntity.ok(dbsResponseEntity);
         } catch (UserAlreadyRegisterException exception) {
-            log.debug("BlogController:registerCall user already present in system : {}", exception);
+            log.debug("UserController:registerCall user already present in system : {}", exception);
             throw exception;
         } catch (Exception exception) {
-            log.debug("BlogController:registerCall something when wrong : {}", exception);
+            log.debug("UserController:registerCall something when wrong : {}", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -54,16 +51,43 @@ public class UserController {
             dbsResponseEntity.setMessage("User login successfully.");
             return ResponseEntity.ok(dbsResponseEntity);
         } catch (RecordNotFoundException exception) {
-            log.debug("BlogController:updateBlogCall user not yet register : {}", exception);
+            log.debug("UserController:loginCall user not yet register : {}", exception);
             throw exception;
         } catch (AuthenticationFailedException exception) {
-            log.debug("BlogController:updateBlogCall Authentication failed exception : {}", exception);
+            log.debug("UserController:loginCall Authentication failed exception : {}", exception);
             throw exception;
         } catch (Exception exception) {
-            log.debug("BlogController:updateBlogCall something when wrong : {}", exception);
+            log.debug("UserController:loginCall something when wrong : {}", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("v1/verifyEmailId/{code}")
+    public ResponseEntity<DBSResponseEntity<JwtResponse>> verifyEmailIdCall(@PathVariable String code) {
+        DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
+        log.info("UserController:verifyEmailIdCall request received with body : {}", code);
+        try {
+            if(userService.verifyEmailId(Integer.parseInt(code.substring(0,4)),code.substring(4))){
+                  throw new RecordNotFoundException("Record not present in system.");
+            }else {
+                JwtResponse jwtResponse = new JwtResponse("Test token.");
+                dbsResponseEntity.setData(jwtResponse);
+                dbsResponseEntity.setMessage("User login successfully.");
+                return ResponseEntity.ok(dbsResponseEntity);
+            }
+        } catch (RecordNotFoundException exception) {
+            log.debug("UserController:verifyEmailIdCall user not yet register : {}", exception);
+            throw exception;
+        } catch (AuthenticationFailedException exception) {
+            log.debug("UserController:verifyEmailIdCall Authentication failed exception : {}", exception);
+            throw exception;
+        } catch (Exception exception) {
+            log.debug("UserController:verifyEmailIdCall something when wrong : {}", exception);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
 
 
 }

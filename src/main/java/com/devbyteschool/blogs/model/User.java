@@ -28,6 +28,10 @@ public class User {
 
     private Integer isSocialRegister;
 
+    private Integer otp;
+
+    private Integer isAcountVerify;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

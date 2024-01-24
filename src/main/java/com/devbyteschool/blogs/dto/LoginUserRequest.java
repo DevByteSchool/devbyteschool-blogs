@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Slf4j
 @Getter
 @Setter
@@ -19,17 +21,14 @@ public class LoginUserRequest {
 	@NotBlank(message = "Password is required parameter.")
 	private String password;
 
-	@NotNull(message = "Role is required parameter.")
-	private Integer role;
-
 	private int isSocialRegister;
 
 	@Override
 	public String toString() {
 		return "LoginUserRequest{" +
 				"userName='" + userName + '\'' +
-				", role=" + role +
 				", isSocialRegister=" + isSocialRegister +
 				'}';
 	}
 }
+

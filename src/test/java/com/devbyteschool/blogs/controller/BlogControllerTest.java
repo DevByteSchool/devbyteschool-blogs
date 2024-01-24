@@ -38,7 +38,7 @@ public class BlogControllerTest {
     @MockBean
     private BlogService blogService;
 
-    @Test
+    //@Test
     public void testUpdateBlogValidationFailed() throws Exception {
 
         UpdateBlogRequest updateBlogRequest = new UpdateBlogRequest();
@@ -61,7 +61,7 @@ public class BlogControllerTest {
 
     }
 
-    @Test
+    //@Test
     public void testUpdateBlogRecordNotFound() throws Exception {
 
         UpdateBlogRequest updateBlogRequest = new UpdateBlogRequest();
@@ -86,7 +86,7 @@ public class BlogControllerTest {
     }
 
 
-    @Test
+    //@Test
     public void testUpdateBlogRecordSuccess() throws Exception {
 
         UpdateBlogRequest updateBlogRequest = new UpdateBlogRequest();

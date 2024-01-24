@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,14 +26,14 @@ public class RegisterUserRequest {
     private String password;
 
     @NotNull(message = "Role required parameter.")
-    private Integer role;
+    private List<String> roles;
 
     @Override
     public String toString() {
         return "RegisterUserRequest{" +
                 "fullName='" + fullName + '\'' +
                 ", userName='" + userName + '\'' +
-                ", role=" + role +
+                ", role=" + roles +
                 '}';
     }
 }

@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,7 @@ public class BlogController {
 
 
     @PostMapping("v1/blogs")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<DBSResponseEntity> createBlogCall(@Valid @RequestBody CreateBlogRequest createBlogRequest) {
 
         DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
@@ -50,6 +53,7 @@ public class BlogController {
     }
 
     @PutMapping("v1/blogs")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<DBSResponseEntity> updateBlogCall(@Valid @RequestBody UpdateBlogRequest updateBlogRequest) {
         DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
 
@@ -73,6 +77,7 @@ public class BlogController {
     }
 
     @GetMapping("v1/blogs/{blogId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     public ResponseEntity<DBSResponseEntity> getBlogCall(@PathVariable String blogId) {
         DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
 
@@ -88,6 +93,8 @@ public class BlogController {
     }
 
     @DeleteMapping("v1/blogs/{blogId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_USER','ROLE_ADMIN')") you can used this also.
     public ResponseEntity<DBSResponseEntity> deleteBlogCall(@PathVariable String blogId) {
         DBSResponseEntity dbsResponseEntity = new DBSResponseEntity();
 
@@ -102,6 +109,7 @@ public class BlogController {
     }
 
     @GetMapping("v1/blogs")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     public ResponseEntity<DBSResponseEntity> getBlogsCall(@RequestParam(defaultValue = "0") Integer pageNo,
                                                           @RequestParam(defaultValue = "10") Integer pageSize,
                                                           @RequestParam(defaultValue = "id") String sortBy,

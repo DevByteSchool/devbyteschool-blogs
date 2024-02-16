@@ -8,17 +8,10 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
 @EnableCaching
-public class BlogsApplication extends SpringBootServletInitializer  {
+public class BlogsApplication   {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BlogsApplication.class, args);
 	}
-
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return builder.sources(BlogsApplication.class);
-	}
-
-
 
 }

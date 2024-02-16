@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.devbyteschool</groupId>
-    <artifactId>blogs</artifactId>
+    <artifactId>devbyteschool-blogs</artifactId>
     <version>1.0.1</version>
     <name>blogs</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <description>Blogging Website</description>
     <properties>
         <java.version>17</java.version>

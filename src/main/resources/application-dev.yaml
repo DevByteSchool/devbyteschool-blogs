@@ -1,0 +1,6 @@
+# Local MongoDB config
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://root:root@devbyteschool-blog.afmphqb.mongodb.net/?retryWrites=true&w=majority
+      database: devbyteschool-blog

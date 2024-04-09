@@ -1,0 +1,49 @@
+# App config
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  servlet:
+    context-path: /api
+  doc:
+    api-docs:
+      path: /api-docs
+  cache:
+    type: caffeine
+  mail:
+    host: smtp.hostinger.com
+    port: 587
+    username: yourFromMailId@mail.com
+    password: yourPassword_youCanUsedAppPasswordAlso.
+    properties:
+      mail:
+        debug: true
+        transport.protocol: smtp
+        smtp:
+          auth: true
+          connectiontimeout: 15000
+          timeout: 15000
+          writetimeout: 15000
+          starttls.enable: true
+
+# Logging levels: TRACE, DEBUG, INFO, WARN, ERROR
+logging:
+  level:
+    root: INFO
+
+# Email Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# Other properties
+app:
+  mail:
+    verification-link: http://localhost:8080/api/v1/verifyEmailId/
+
+jwt:
+  secret: "@DevByteSchool@Project#12345#"
